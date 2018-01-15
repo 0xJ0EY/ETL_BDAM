@@ -13,7 +13,17 @@ class Row {
         $this->type = $type;
     }
 
-    public function getTypes(string $name) {
+    public function format() {
+        foreach ($this->types as $type) {
+            $type->transform();
+        }
+    }
+
+    public function getTypes() {
+        return $this->types;
+    }
+
+    public function getType(string $name) {
         return $this->types[$name];
     }
 

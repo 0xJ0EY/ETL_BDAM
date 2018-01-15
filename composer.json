@@ -4,5 +4,10 @@
     "type": "project",
     "require": {
         "phpoffice/phpspreadsheet": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ETL\\": "src/ETL/"
+        }
     }
 }

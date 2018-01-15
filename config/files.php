@@ -7,6 +7,7 @@ return [
     ETL\FileType::LOGBOEK => [
         'format' => [
             7 => function($value) {
+                if ($value == 'null') return '00:00';
                 return (new DateTime($value))->format('H:i');
             }
         ],
@@ -21,7 +22,7 @@ return [
             ],
             2 => [
                 'name' => 'date_watched',
-                'type' => new DatetimeMultiple(),
+                'type' => new MergeDatetime(),
                 'extra_columns' => [
                     'time_watched' => 3
                 ]

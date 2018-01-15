@@ -32,7 +32,7 @@ class ETL {
             }
         }
 
-        $this->createRowsFromArray($data, $type);
+        return $this->createRowsFromArray($data, $type);
     }
 
     private function createRowsFromArray(array $data, $type) {
@@ -55,10 +55,6 @@ class ETL {
 
                 $col['type']->setRow($obj);
                 $col['type']->extract($row[$key]); // Set data       
-            }
-
-            foreach ($cols as $key => $col) {
-                $col['type']->format();
                 $obj->setType($col['name'], $col['type']);
             }
 
@@ -66,5 +62,20 @@ class ETL {
         }
 
         return $rows;
+    }
+
+    public function formatRows(array $rows) {
+        foreach ($rows as &$row) {
+            $row->format();
+        }
+
+        return $rows;
+    }
+
+    public function insertAllRows(array $rows, PDO $pdo) {
+        $types = $rows[0]->getTypes(); // The first row should have all the types
+
+        var_dump($types);
+
     }
 }
