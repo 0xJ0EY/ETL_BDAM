@@ -1,0 +1,8 @@
+{
+    "name": "bdam/etl",
+    "description": "ETL proces for BDAM challengeweek",
+    "type": "project",
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.0"
+    }
+}
