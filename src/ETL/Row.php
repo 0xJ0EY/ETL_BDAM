@@ -5,6 +5,10 @@ namespace ETL;
 use ETL\Types\IType;
 
 class Row {
+    private const ROW_CORRECT   = 'correct';
+    private const ROW_INCORRECT = 'incorrect';
+
+    private $status = self::ROW_CORRECT;
 
     private $type = null;
     private $types = [];
@@ -28,11 +32,22 @@ class Row {
     }
 
     public function setType(string $name, IType $type) {
-        $this->types[$name] = $type;
+        $this->types[$name] = clone $type;
     }
 
-    public function toQuery() {
-        return '';
+    public function setIncorrect() {
+        $this->correct = self::ROW_INCORRECT;
     }
 
+    public function setCorrect() {
+        $this->correct = self::ROW_CORRECT;
+    }
+
+    public function isCorrect() {
+        return $this->status == self::ROW_CORRECT;
+    }
+
+    public function getStatus() {   
+        return $this->status;
+    }
 }

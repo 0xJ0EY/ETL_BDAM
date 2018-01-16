@@ -2,6 +2,9 @@
 
 namespace ETL\Types;
 
+/*
+ * Requires the extra_value "time" with the (h:H):i:s notation
+*/
 class MergeDatetime implements IType, IMultiple {
     private const SEPERATOR = '|';
 
@@ -20,14 +23,11 @@ class MergeDatetime implements IType, IMultiple {
 
     function extract($value) {
         $this->value = $value;
-
-        foreach ($this->extras as $extra) {
-            $this->value .= self::SEPERATOR . $extra;
-        }
     }
 
     function transform() {
-        $this->formatted = $this->value;
+        $date = new \DateTime($this->value . ' ' . $this->extras['time']);
+        $this->formatted = $date->format('Y-m-d H:i:s');
     }
 
     function load() {

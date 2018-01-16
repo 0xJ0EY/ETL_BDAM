@@ -7,7 +7,7 @@ namespace ETL;
  */
 
 abstract class FileType {
-    const LOGBOEK = 'logboek';
-
-    
+    public const LOGBOEK = 'logboek';
+    public const FILMDATA = 'filmdata';
+    public const GAME_OF_THRONES = 'game_of_thrones';
 }

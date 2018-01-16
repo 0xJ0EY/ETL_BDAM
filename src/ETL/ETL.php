@@ -5,11 +5,10 @@ namespace ETL;
 use ETL\Row;
 
 class ETL {
-
     private $data = [];
 
     public function loadFromExcel(string $file, $type) {
-        $fileLocation = __ROOT__ . "/data/" . $file;
+        $fileLocation = __DATA__ . $file;
 
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $speadsheet = $reader->load($fileLocation);
@@ -23,7 +22,6 @@ class ETL {
 
         # Fix format before checking
         foreach ($data as $row) {
-
             foreach ($row as $key => $value) {
 
                 if (isset($format[$key])) {
@@ -39,8 +37,8 @@ class ETL {
         $cols = include(__ROOT__ . "/config/files.php");
         $cols = $cols[$type]['rows']; // Overwrite old data
         $rows = [];
-    
-        foreach ($data as $row) {
+            
+        foreach ($data as $k => $row) {
             $obj = new Row($type);
 
             foreach ($cols as $key => $col) {
@@ -60,22 +58,51 @@ class ETL {
 
             $rows[] = $obj;
         }
-
+    
         return $rows;
     }
 
     public function formatRows(array $rows) {
-        foreach ($rows as &$row) {
+        foreach ($rows as $key => $row) {
             $row->format();
+            $rows[$key] = $row;
         }
 
         return $rows;
     }
 
-    public function insertAllRows(array $rows, PDO $pdo) {
-        $types = $rows[0]->getTypes(); // The first row should have all the types
+    public function insertAllRows(array $rows, \PDO $pdo, $type) {
+        $config = include(__ROOT__ . "/config/files.php");
+        $table = $config[$type]['database'];
+        $types = $config[$type]['rows'];
 
-        var_dump($types);
+        $cols = array_map(function($v) { return $v['name']; }, $types);
 
+        $preparedCols = implode(', ', $cols);
+
+        $keys = array_map(function($v) { return ':'.$v; }, $cols);
+
+        $preparedVals = implode(', ', $keys);
+
+        $query = "
+            INSERT INTO {$table} ({$preparedCols})
+            VALUES ({$preparedVals})
+        ";
+
+        $stmt = $pdo->prepare($query);
+
+        foreach ($rows as $row) {
+            // Do not allow incorrect rows into the datawarehouse
+            if (!$row->isCorrect()) continue;
+
+            $rowTypes = $row->getTypes();
+            $pValues = [];
+            
+            foreach ($rowTypes as $k => $value) {
+                $pValues[':'.$k] = $value->load();
+            }
+
+            $stmt->execute($pValues);
+        }
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'host'      => '',
-    'database'  => '',
-    'username'  => '',
-    'password'  => ''
+    'host'      => '127.0.0.1',
+    'database'  => 'ETL',
+    'username'  => 'root',
+    'password'  => 'root'
 ];
