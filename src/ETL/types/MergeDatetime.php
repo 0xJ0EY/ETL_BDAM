@@ -6,7 +6,6 @@ namespace ETL\Types;
  * Requires the extra_value "time" with the (h:H):i:s notation
 */
 class MergeDatetime implements IType, IMultiple {
-    private const SEPERATOR = '|';
 
     private $row = null;
     private $value      = '';
