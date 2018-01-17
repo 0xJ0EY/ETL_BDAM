@@ -2,6 +2,8 @@
 
 namespace ETL\Types;
 
+use ETL\Row;
+
 /*
  * Requires the extra_value "time" with the (h:H):i:s notation
 */
@@ -12,8 +14,8 @@ class MergeDatetime implements IType, IMultiple {
     private $formatted  = '';
     private $extras     = [];
 
-    public function setRow($row) {
-        $this->row = $row;
+    public function setRow(Row &$row) {
+        $this->row = &$row;
     }
 
     public function getRaw() {

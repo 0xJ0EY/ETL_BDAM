@@ -36,11 +36,7 @@ class Row {
     }
 
     public function setIncorrect() {
-        $this->correct = self::ROW_INCORRECT;
-    }
-
-    public function setCorrect() {
-        $this->correct = self::ROW_CORRECT;
+        $this->status = self::ROW_INCORRECT;
     }
 
     public function isCorrect() {

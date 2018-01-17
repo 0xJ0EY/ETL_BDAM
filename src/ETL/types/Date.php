@@ -2,14 +2,16 @@
 
 namespace ETL\Types;
 
+use ETL\Row;
+
 class Date implements IType {
 
     private $row        = null;
     private $value      = '';
     private $formatted  = '';
 
-    public function setRow($row) {
-        $this->row = $row;
+    public function setRow(Row &$row) {
+        $this->row = &$row;
     }
 
     public function getRaw() {

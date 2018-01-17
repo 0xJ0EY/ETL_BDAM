@@ -2,18 +2,16 @@
 
 namespace ETL\Types;
 
+use ETL\Row;
+
 class Interger implements IType {
 
     private $row        = null;
     private $value      = '';
     private $formatted  = '';
-    
-    public function __construct() {
 
-    }
-
-    public function setRow($row) {
-        $this->row = $row;
+    public function setRow(Row &$row) {
+        $this->row = &$row;
     }
 
     public function getRaw() {
@@ -26,6 +24,7 @@ class Interger implements IType {
 
     public function transform() {
         $this->formatted = filter_var($this->value, FILTER_SANITIZE_NUMBER_INT);
+        $this->formatted = (strlen($this->formatted) == 0) ? null : $this->formatted;
     }
 
     public function load() {

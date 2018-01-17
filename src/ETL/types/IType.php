@@ -2,8 +2,10 @@
 
 namespace ETL\Types;
 
+use ETL\Row;
+
 interface IType {
-    public function setRow($row);
+    public function setRow(Row &$row);
 
     public function getRaw();
 

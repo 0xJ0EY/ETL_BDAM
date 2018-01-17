@@ -42,18 +42,19 @@ class ETL {
             $obj = new Row($type);
 
             foreach ($cols as $key => $col) {
-                $interfaces = class_implements($col['type']);
+                $type       = clone $col['type'];
+                $interfaces = class_implements($type);
                 
                 // Only add extra_columns if the type accepts it
                 if (isset($interfaces['ETL\Types\IMultiple'])) {
                     foreach($col['extra_columns'] as $name => $value) {
-                        $col['type']->add($name, $row[$value]);
+                        $type->add($name, $row[$value]);
                     }
                 }
 
-                $col['type']->setRow($obj);
-                $col['type']->extract($row[$key]); // Set data       
-                $obj->setType($col['name'], $col['type']);
+                $type->setRow($obj);
+                $type->extract($row[$key]); // Set data       
+                $obj->setType($col['name'], $type);
             }
 
             $rows[] = $obj;
@@ -92,7 +93,6 @@ class ETL {
         $stmt = $pdo->prepare($query);
 
         foreach ($rows as $row) {
-            // Do not allow incorrect rows into the datawarehouse
             if (!$row->isCorrect()) continue;
 
             $rowTypes = $row->getTypes();

@@ -2,18 +2,21 @@
 
 namespace ETL\Types;
 
+use ETL\Row;
+
 class Varchar implements IType {
 
     private $row        = null;
     private $value      = '';
     private $formatted  = '';
+    private $setNull    = null;
     
-    public function __construct($maxLength) {
-
+    public function __construct($maxLength, $setNull = true) {
+        $this->setNull = $setNull;
     }
 
-    public function setRow($row) {
-        $this->row = $row;
+    public function setRow(Row &$row) {
+        $this->row = &$row;
     }
 
     public function getRaw() {
@@ -25,7 +28,7 @@ class Varchar implements IType {
     }
 
     public function transform() {
-        $this->formatted = $this->value;
+        $this->formatted = ($this->value && $this->setNull ? $this->value : null);
     }
 
     public function load() {
