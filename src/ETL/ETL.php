@@ -19,17 +19,7 @@ class ETL {
 
         $format = include(__ROOT__ . "/config/files.php");
         $format = $format[$type]['format'];
-
-        # Fix format before checking
-        foreach ($data as $row) {
-            foreach ($row as $key => $value) {
-
-                if (isset($format[$key])) {
-                    $value = $format[$key]($value); // Run anon function
-                }
-            }
-        }
-
+        
         return $this->createRowsFromArray($data, $type);
     }
 

@@ -6,16 +6,11 @@ use ETL\Types\Time;
 use ETL\Types\Varchar;
 use ETL\Types\Interger;
 use ETL\Types\MergeDatetime;
+use ETL\Types\Device;
 
 return [
     ETL\FileType::LOGBOEK => [
-        'format' => [
-        ],
         'rows' => [
-            0 => [
-                'name' => 'timestamp',
-                'type' => new DateTime()
-            ],
             1 => [
                 'name' => 'student_number',
                 'type' => new Varchar(255)
@@ -29,7 +24,7 @@ return [
             ],
             4 => [
                 'name' => 'device',
-                'type' => new Varchar(255)
+                'type' => new Device()
             ], 
             5 => [
                 'name' => 'channel',
