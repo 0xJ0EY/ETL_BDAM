@@ -17,9 +17,6 @@ class ETL {
         $data = $worksheet->toArray();
         unset($data[0]); // Remove keys
 
-        $format = include(__ROOT__ . "/config/files.php");
-        $format = $format[$type]['format'];
-        
         return $this->createRowsFromArray($data, $type);
     }
 
