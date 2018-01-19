@@ -11,7 +11,7 @@ class DateTime implements IType {
     private $formatted  = '';
 
     public function setRow(Row &$row) {
-        $this->row = &$row;
+        $this->row = $row;
     }
 
     public function getRaw() {

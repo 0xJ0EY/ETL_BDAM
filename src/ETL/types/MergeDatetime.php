@@ -15,7 +15,7 @@ class MergeDatetime implements IType, IMultiple {
     private $extras     = [];
 
     public function setRow(Row &$row) {
-        $this->row = &$row;
+        $this->row = $row;
     }
 
     public function getRaw() {
@@ -28,6 +28,15 @@ class MergeDatetime implements IType, IMultiple {
 
     function transform() {
         $date = new \DateTime($this->value . ' ' . $this->extras['time']);
+
+        $startDate  = new \DateTime('2017-11-01');
+        $endDate    = new \DateTime('2018-01-30');
+
+        if ($date->getTimestamp() < $startDate->getTimestamp() ||
+            $date->getTimestamp() > $endDate->getTimestamp()) {
+            $this->row->setIncorrect();
+        }
+
         $this->formatted = $date->format('Y-m-d H:i:s');
     }
 

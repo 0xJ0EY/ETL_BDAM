@@ -19,7 +19,7 @@ class Varchar implements IType {
     }
 
     public function setRow(Row &$row) {
-        $this->row = &$row;
+        $this->row = $row;
     }
 
     public function getRaw() {
